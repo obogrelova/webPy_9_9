@@ -1,30 +1,19 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, request
 import requests
 
 app = Flask(__name__)
 
-
-def get_random_quote():
-    params = {
-        'method': 'getQuote',
-        'format': 'json',
-        'lang': 'ru'
-    }
-    response = requests.get('https://api.quotable.io/random', params=params)
+def fetch_quote():
+    response = requests.get('http://api.quotable.io/random')
     if response.status_code == 200:
-        data = response.json()
-        return data.get('quoteText', 'Цитата не найдена')
-    return 'Ошибка при получении цитаты.'
+        return response.json()
+    else:
+        return {"content": "Не удалось получить цитату.", "author": ""}
 
 @app.route('/')
 def index():
-    quote = get_random_quote()
+    quote = fetch_quote()
     return render_template('index.html', quote=quote)
-
-@app.route('/api/quote')
-def quote_api():
-    quote = get_random_quote()
-    return jsonify({ 'quote': quote })
 
 if __name__ == '__main__':
     app.run(debug=True)
