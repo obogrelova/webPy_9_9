@@ -3,7 +3,6 @@ import requests
 
 app = Flask(__name__)
 
-const_url = 'https://api.quotable.io/random'
 
 def get_random_quote():
     params = {
@@ -11,7 +10,7 @@ def get_random_quote():
         'format': 'json',
         'lang': 'ru'
     }
-    response = requests.get(const_url, params=params)
+    response = requests.get('https://api.quotable.io/random', params=params)
     if response.status_code == 200:
         data = response.json()
         return data.get('quoteText', 'Цитата не найдена')
