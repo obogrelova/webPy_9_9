@@ -17,12 +17,12 @@ def get_random_quote():
         return data.get('quoteText', 'Цитата не найдена')
     return 'Ошибка при получении цитаты.'
 
-@app.rout('/')
+@app.route('/')
 def index():
     quote = get_random_quote()
     return render_template('index.html', quote=quote)
 
-@app.rout('/api/quote')
+@app.route('/api/quote')
 def quote_api():
     quote = get_random_quote()
     return jsonify({ 'quote': quote })
